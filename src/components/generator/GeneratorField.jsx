@@ -27,6 +27,11 @@ export default function GeneratorField({
   generateNew
 }) {
   const [formatted, setFormatted] = useState(false);
+  const [text, setText] = useState(value);
+
+  useEffect(() => {
+    setTimeout(() => setText(value), 700)
+  }, [text])
 
   function formatUSNumber(entry = "") {
     const match = entry
@@ -109,11 +114,15 @@ export default function GeneratorField({
         </Grid>
 
         <Grid item md={4} xs={12}>
-          <Tooltip title={value}>
+          <Tooltip title={text}>
             <TextField
               disabled
               variant={"outlined"}
               fullWidth
+              onClick={()=> {
+                navigator.clipboard.writeText(!formatted ? formatByLabel(label, value) : value)
+                setText("Copied")
+              }}
               value={!formatted ? formatByLabel(label, value) : value}
               size={"small"}
             />
